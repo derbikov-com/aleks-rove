@@ -21,7 +21,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
                     <Link href={c.path} className="transition-colors hover:text-brand">
                       {c.name}
                     </Link>
-                    <span aria-hidden="true" className="text-ink/25">
+                    <span aria-hidden="true" className="text-muted">
                       /
                     </span>
                   </>

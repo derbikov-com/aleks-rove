@@ -86,8 +86,8 @@ export default async function HomePage() {
           className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_80%_70%_at_70%_20%,black,transparent)]"
           aria-hidden="true"
         />
-        <div className="absolute -right-32 -top-48 h-[36rem] w-[36rem] rounded-full bg-brand/45 blur-[140px]" aria-hidden="true" />
-        <div className="absolute -left-40 bottom-0 h-72 w-72 rounded-full bg-accent/10 blur-[100px]" aria-hidden="true" />
+        <div className="absolute -right-72 -top-96 h-[64rem] w-[64rem] bg-[radial-gradient(closest-side,rgb(35_72_255/0.5),transparent)]" aria-hidden="true" />
+        <div className="absolute -bottom-48 -left-64 h-[36rem] w-[36rem] bg-[radial-gradient(closest-side,rgb(200_240_74/0.12),transparent)]" aria-hidden="true" />
 
         <div className="container-x relative grid items-center gap-14 pb-16 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_1fr] lg:gap-10 lg:pb-24 lg:pt-24">
           <div>
@@ -274,7 +274,7 @@ function HeroPanel() {
   ];
   return (
     <div className="relative mx-auto w-full max-w-md lg:mr-0" aria-hidden="true">
-      <div className="rounded-3xl border border-white/10 bg-white/[0.05] p-6 shadow-2xl backdrop-blur-md sm:p-7">
+      <div className="rounded-3xl border border-white/10 bg-ink-2/90 p-6 shadow-2xl sm:p-7">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-white/80">Эффект после запуска</p>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/80">

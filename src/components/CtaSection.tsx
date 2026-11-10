@@ -13,7 +13,7 @@ export function CtaSection({
     <section id="zayavka" className="on-dark relative overflow-hidden bg-ink text-white" aria-labelledby="cta-title">
       <div className="bg-grid absolute inset-0 opacity-60" aria-hidden="true" />
       <div
-        className="absolute -right-40 -top-40 h-[32rem] w-[32rem] rounded-full bg-brand/40 blur-[120px]"
+        className="absolute -right-80 -top-80 h-[56rem] w-[56rem] bg-[radial-gradient(closest-side,rgb(35_72_255/0.45),transparent)]"
         aria-hidden="true"
       />
       <div className="container-x relative grid gap-12 py-20 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:py-28">

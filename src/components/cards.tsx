@@ -15,7 +15,7 @@ export function ServiceCard({ service, index }: { service: Service; index?: numb
           <Icon name={service.icon} />
         </span>
         {index !== undefined && (
-          <span className="text-sm font-bold tabular-nums text-ink/25">{String(index + 1).padStart(2, "0")}</span>
+          <span className="text-sm font-bold tabular-nums text-muted" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
         )}
       </div>
       <h3 className="mt-6 text-xl font-bold leading-snug tracking-tight">{service.title}</h3>
@@ -43,7 +43,7 @@ export function CaseCard({ item, priority = false }: { item: CaseStudy; priority
           className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {top && (
-          <span className="absolute bottom-4 left-4 rounded-2xl bg-white/95 px-4 py-2.5 shadow-[var(--shadow-card)] backdrop-blur">
+          <span className="absolute bottom-4 left-4 rounded-2xl bg-white px-4 py-2.5 shadow-[var(--shadow-card)]">
             <span className="block text-xl font-extrabold leading-none text-brand">{top.value}</span>
             <span className="mt-1 block text-xs font-medium text-muted">{top.label}</span>
           </span>
