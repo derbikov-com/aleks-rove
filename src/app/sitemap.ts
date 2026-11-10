@@ -1,14 +1,15 @@
 import type { MetadataRoute } from "next";
-import { getCases, getCategories, getPosts, getServices, getTags } from "@/lib/cms";
+import { getCases, getCategories, getPages, getPosts, getServices, getTags } from "@/lib/cms";
 import { absoluteUrl } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [services, cases, posts, categories, tags] = await Promise.all([
+  const [services, cases, posts, categories, tags, cmsPages] = await Promise.all([
     getServices(),
     getCases(),
     getPosts(),
     getCategories(),
     getTags(),
+    getPages(),
   ]);
   const now = new Date();
 
@@ -40,5 +41,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     ...categories.map((c) => ({ url: absoluteUrl(`/blog/kategoriya/${c.slug}`), lastModified: now, priority: 0.4 })),
     ...tags.map((t) => ({ url: absoluteUrl(`/blog/teg/${t.slug}`), lastModified: now, priority: 0.3 })),
+    ...cmsPages
+      .filter((p) => p.slug !== "politika-konfidencialnosti")
+      .map((p) => ({ url: absoluteUrl(`/${p.slug}`), lastModified: p.updatedAt ? new Date(p.updatedAt) : now, priority: 0.4 })),
   ];
 }

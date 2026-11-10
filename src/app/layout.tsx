@@ -1,12 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
-import { Analytics } from "@/components/Analytics";
-import { CookieBanner } from "@/components/CookieBanner";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { JsonLd } from "@/components/JsonLd";
-import { LeadModal } from "@/components/LeadModal";
-import { organizationJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -46,17 +39,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ru" className={`${manrope.variable} antialiased`}>
-      <body className="flex min-h-dvh flex-col">
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <LeadModal />
-        <CookieBanner />
-        <Analytics />
-        <JsonLd data={organizationJsonLd()} />
-      </body>
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }

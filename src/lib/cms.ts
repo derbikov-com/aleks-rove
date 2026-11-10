@@ -7,7 +7,8 @@ import { faq } from "@/content/faq";
 import { posts } from "@/content/posts";
 import { services } from "@/content/services";
 import { categories, tags } from "@/content/taxonomy";
-import type { CaseStudy, Category, Faq, ImageAsset, Post, Service, Tag } from "@/lib/types";
+import { site } from "@/lib/site";
+import type { CaseStudy, Category, CmsPage, Faq, ImageAsset, Post, Service, SiteContacts, Tag } from "@/lib/types";
 
 const API = process.env.BACKEND_API_URL?.replace(/\/$/, "");
 const REVALIDATE_SECONDS = 300;
@@ -78,3 +79,42 @@ export const getPost = async (slug: string) => {
   );
   return post ? withCover(post) : null;
 };
+
+export const getPage = (slug: string) =>
+  sourceOne<CmsPage>(`/api/public/pages/${encodeURIComponent(slug)}`, () => undefined);
+
+export const getPages = () =>
+  sourceList<Pick<CmsPage, "slug" | "title" | "updatedAt">>("/api/public/pages", () => []);
+
+const defaultContacts: SiteContacts = {
+  companyName: site.name,
+  tagline: site.tagline,
+  phone: site.phone,
+  phoneHref: site.phoneHref,
+  email: site.email,
+  address: `${site.address.city}, ${site.address.street}`,
+  workingHours: site.workingHours,
+};
+
+/** Телефон в формате для ссылки tel: — только цифры и плюс, 8 в начале меняем на +7. */
+export function phoneHref(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 11 && digits.startsWith("8")) return `+7${digits.slice(1)}`;
+  return digits ? `+${digits}` : "";
+}
+
+export async function getSettings(): Promise<SiteContacts> {
+  if (!API) return defaultContacts;
+  const s = await api<Partial<SiteContacts>>("/api/public/settings");
+  if (!s) return defaultContacts;
+  const phone = s.phone || defaultContacts.phone;
+  return {
+    companyName: s.companyName || defaultContacts.companyName,
+    tagline: s.tagline || defaultContacts.tagline,
+    phone,
+    phoneHref: phoneHref(phone),
+    email: s.email || defaultContacts.email,
+    address: s.address || defaultContacts.address,
+    workingHours: s.workingHours || defaultContacts.workingHours,
+  };
+}

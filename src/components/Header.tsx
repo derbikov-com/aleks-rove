@@ -4,12 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { mainNav, site } from "@/lib/site";
+import type { SiteContacts } from "@/lib/types";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 import { OpenLeadButton } from "./OpenLeadButton";
 import { cn } from "./ui";
 
-export function Header() {
+export function Header({ contacts }: { contacts: SiteContacts }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -57,11 +58,11 @@ export function Header() {
 
         <div className="flex items-center gap-2 sm:gap-4">
           <a
-            href={`tel:${site.phoneHref}`}
+            href={`tel:${contacts.phoneHref}`}
             data-track-location="header"
             className="hidden text-[0.9375rem] font-bold text-ink transition-colors hover:text-brand md:inline"
           >
-            {site.phone}
+            {contacts.phone}
           </a>
           <div className="hidden sm:block">
             <OpenLeadButton source="header" />
@@ -105,16 +106,16 @@ export function Header() {
           </ul>
           <div className="mt-8 flex flex-col gap-3">
             <a
-              href={`tel:${site.phoneHref}`}
+              href={`tel:${contacts.phoneHref}`}
               data-track-location="mobile-menu"
               className="flex items-center gap-3 text-lg font-bold"
             >
               <Icon name="phone" size={20} className="text-brand" />
-              {site.phone}
+              {contacts.phone}
             </a>
-            <a href={`mailto:${site.email}`} className="flex items-center gap-3 text-lg font-semibold text-muted">
+            <a href={`mailto:${contacts.email}`} className="flex items-center gap-3 text-lg font-semibold text-muted">
               <Icon name="mail" size={20} className="text-brand" />
-              {site.email}
+              {contacts.email}
             </a>
           </div>
           <OpenLeadButton source="mobile-menu" size="lg" className="mt-8 w-full" onOpen={() => setOpen(false)} />

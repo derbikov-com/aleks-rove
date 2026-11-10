@@ -13,6 +13,8 @@ const backendUrl = process.env.BACKEND_API_URL ? new URL(process.env.BACKEND_API
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // Адрес API для браузерной части админки (встраивается при сборке)
+  env: { ADMIN_API_URL: process.env.BACKEND_API_URL ?? "" },
   poweredByHeader: false,
   reactStrictMode: true,
   images: {

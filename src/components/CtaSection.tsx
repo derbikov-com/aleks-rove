@@ -1,14 +1,15 @@
-import { site } from "@/lib/site";
+import { getSettings } from "@/lib/cms";
 import { ContactForm } from "./ContactForm";
 import { Icon } from "./Icon";
 
-export function CtaSection({
+export async function CtaSection({
   source = "cta-section",
   title = "Расскажите о задаче — предложим решение",
 }: {
   source?: string;
   title?: string;
 }) {
+  const contacts = await getSettings();
   return (
     <section id="zayavka" className="on-dark relative overflow-hidden bg-ink text-white" aria-labelledby="cta-title">
       <div className="bg-grid absolute inset-0 opacity-60" aria-hidden="true" />
@@ -38,16 +39,16 @@ export function CtaSection({
           </ul>
           <div className="mt-10 space-y-3 border-t border-white/10 pt-8">
             <a
-              href={`tel:${site.phoneHref}`}
+              href={`tel:${contacts.phoneHref}`}
               data-track-location={source}
               className="flex items-center gap-3 text-xl font-bold hover:text-accent sm:text-2xl"
             >
               <Icon name="phone" className="text-accent" />
-              {site.phone}
+              {contacts.phone}
             </a>
-            <a href={`mailto:${site.email}`} className="flex items-center gap-3 text-white/80 hover:text-white">
+            <a href={`mailto:${contacts.email}`} className="flex items-center gap-3 text-white/80 hover:text-white">
               <Icon name="mail" className="text-accent" />
-              {site.email}
+              {contacts.email}
             </a>
           </div>
         </div>

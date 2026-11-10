@@ -69,3 +69,22 @@ export type Post = {
 };
 
 export type Faq = { question: string; answer: string };
+
+/** Контакты и название компании — редактируются в «Настройках» админки. */
+export type SiteContacts = {
+  companyName: string;
+  tagline: string;
+  phone: string;
+  phoneHref: string;
+  email: string;
+  address: string;
+  workingHours: string;
+};
+
+export type CmsPage = {
+  slug: string;
+  title: string;
+  body: string;
+  updatedAt?: string;
+  seo?: Seo;
+};

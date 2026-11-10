@@ -177,3 +177,19 @@
     transform: none;
   }
 }
+
+/* Редактор текста в админке */
+.admin-editor img {
+  max-width: 100%;
+  height: auto;
+}
+.admin-editor img.ProseMirror-selectednode {
+  outline: 3px solid var(--color-brand);
+}
+.admin-editor a {
+  cursor: text;
+}
+.admin-editor hr {
+  margin-block: 2em;
+  border-color: var(--color-line);
+}

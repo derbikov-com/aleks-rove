@@ -1,15 +1,32 @@
 import { PageHero } from "@/components/PageHero";
+import { getPage, getSettings } from "@/lib/cms";
 import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
+
+const SLUG = "politika-konfidencialnosti";
 
 export const metadata = pageMetadata({
   title: "Политика обработки персональных данных",
   description: `Политика ${site.name} в отношении обработки персональных данных пользователей сайта.`,
-  path: "/politika-konfidencialnosti",
+  path: `/${SLUG}`,
 });
 
-// Шаблон политики. Перед запуском юрист заказчика должен указать реквизиты оператора.
-export default function PrivacyPage() {
+// Если в админке создана страница с адресом politika-konfidencialnosti — показываем её текст,
+// иначе встроенный шаблон (перед запуском юрист заказчика должен указать реквизиты оператора).
+export default async function PrivacyPage() {
+  const [page, contacts] = await Promise.all([getPage(SLUG), getSettings()]);
+  if (page) {
+    return (
+      <>
+        <PageHero crumbs={[{ name: page.title, path: `/${SLUG}` }]} title={page.title} />
+        <section className="py-12 lg:py-20">
+          <div className="container-x">
+            <div className="prose-content max-w-3xl" dangerouslySetInnerHTML={{ __html: page.body }} />
+          </div>
+        </section>
+      </>
+    );
+  }
   return (
     <>
       <PageHero
@@ -24,7 +41,7 @@ export default function PrivacyPage() {
             <p>
               Настоящая политика определяет порядок обработки и защиты персональных данных пользователей сайта {site.url}
               (далее — Сайт) в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных». Оператором
-              персональных данных является {site.name} (далее — Оператор).
+              персональных данных является {contacts.companyName} (далее — Оператор).
             </p>
             <h2>2. Какие данные мы обрабатываем</h2>
             <ul>
@@ -61,7 +78,7 @@ export default function PrivacyPage() {
             <h2>7. Права пользователя</h2>
             <p>
               Пользователь вправе получить сведения об обработке своих данных, потребовать их уточнения, блокирования или
-              уничтожения, а также отозвать согласие, направив запрос на <a href={`mailto:${site.email}`}>{site.email}</a>.
+              уничтожения, а также отозвать согласие, направив запрос на <a href={`mailto:${contacts.email}`}>{contacts.email}</a>.
             </p>
             <h2>8. Файлы cookie</h2>
             <p>

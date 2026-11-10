@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteChrome } from "@/components/SiteChrome";
 import { ButtonLink } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -7,6 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default function NotFound() {
+  return (
+    <SiteChrome>
+      <NotFoundContent />
+    </SiteChrome>
+  );
+}
+
+function NotFoundContent() {
   return (
     <section className="bg-paper py-24 sm:py-32">
       <div className="container-x text-center">

@@ -2,27 +2,33 @@ import { ContactForm } from "@/components/ContactForm";
 import { Icon, type IconKey } from "@/components/Icon";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
+import type { Metadata } from "next";
+import { getSettings } from "@/lib/cms";
 import { pageMetadata } from "@/lib/seo";
 import { absoluteUrl, site } from "@/lib/site";
 
-export const metadata = pageMetadata({
-  title: "Контакты",
-  description: `Свяжитесь с ${site.name}: телефон ${site.phone}, email ${site.email}. Ответим в течение рабочего дня.`,
-  path: "/kontakty",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const c = await getSettings();
+  return pageMetadata({
+    title: "Контакты",
+    description: `Свяжитесь с ${c.companyName}: телефон ${c.phone}, email ${c.email}. Ответим в течение рабочего дня.`,
+    path: "/kontakty",
+  });
+}
 
-export default function ContactsPage() {
-  const address = `${site.address.city}, ${site.address.street}`;
+export default async function ContactsPage() {
+  const c = await getSettings();
+  const address = c.address;
   const items: { icon: IconKey; label: string; value: string; href?: string; track?: string }[] = [
-    { icon: "phone", label: "Телефон", value: site.phone, href: `tel:${site.phoneHref}`, track: "contacts" },
-    { icon: "mail", label: "Email", value: site.email, href: `mailto:${site.email}` },
+    { icon: "phone", label: "Телефон", value: c.phone, href: `tel:${c.phoneHref}`, track: "contacts" },
+    { icon: "mail", label: "Email", value: c.email, href: `mailto:${c.email}` },
     {
       icon: "pin",
       label: "Офис",
       value: address,
       href: `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`,
     },
-    { icon: "clock", label: "Режим работы", value: site.workingHours },
+    { icon: "clock", label: "Режим работы", value: c.workingHours },
   ];
 
   return (

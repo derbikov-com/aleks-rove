@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { getServices } from "@/lib/cms";
 import { mainNav, site } from "@/lib/site";
+import type { SiteContacts } from "@/lib/types";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 
-export async function Footer() {
+export async function Footer({ contacts }: { contacts: SiteContacts }) {
   const services = await getServices();
   const year = new Date().getFullYear();
   return (
@@ -48,29 +49,29 @@ export async function Footer() {
           <ul className="mt-5 space-y-4">
             <li>
               <a
-                href={`tel:${site.phoneHref}`}
+                href={`tel:${contacts.phoneHref}`}
                 data-track-location="footer"
                 className="flex items-center gap-3 text-lg font-bold text-white hover:text-accent"
               >
                 <Icon name="phone" size={18} className="text-accent" />
-                {site.phone}
+                {contacts.phone}
               </a>
             </li>
             <li>
-              <a href={`mailto:${site.email}`} className="flex items-center gap-3 hover:text-white">
+              <a href={`mailto:${contacts.email}`} className="flex items-center gap-3 hover:text-white">
                 <Icon name="mail" size={18} className="text-accent" />
-                {site.email}
+                {contacts.email}
               </a>
             </li>
             <li className="flex items-start gap-3">
               <Icon name="pin" size={18} className="mt-0.5 shrink-0 text-accent" />
               <span>
-                {site.address.city}, {site.address.street}
+                {contacts.address}
               </span>
             </li>
             <li className="flex items-center gap-3">
               <Icon name="clock" size={18} className="text-accent" />
-              {site.workingHours}
+              {contacts.workingHours}
             </li>
           </ul>
         </div>
@@ -78,7 +79,7 @@ export async function Footer() {
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col gap-3 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {site.foundedYear}–{year} {site.name}
+            © {site.foundedYear}–{year} {contacts.companyName}
           </p>
           <Link href="/politika-konfidencialnosti" className="hover:text-white">
             Политика обработки персональных данных

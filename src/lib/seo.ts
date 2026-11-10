@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { absoluteUrl, site } from "@/lib/site";
-import type { Seo } from "@/lib/types";
+import type { Seo, SiteContacts } from "@/lib/types";
 
 type PageMetaInput = {
   title: string;
@@ -70,28 +70,26 @@ export function breadcrumbJsonLd(crumbs: Crumb[]) {
   };
 }
 
-export function organizationJsonLd() {
+export function organizationJsonLd(c: SiteContacts) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": absoluteUrl("/#organization"),
-    name: site.name,
+    name: c.companyName,
     url: site.url,
     logo: absoluteUrl("/logo.png"),
-    email: site.email,
-    telephone: site.phoneHref,
+    email: c.email,
+    telephone: c.phoneHref,
     foundingDate: String(site.foundedYear),
     address: {
       "@type": "PostalAddress",
-      streetAddress: site.address.street,
-      addressLocality: site.address.city,
-      postalCode: site.address.postalCode,
+      streetAddress: c.address,
       addressCountry: site.address.country,
     },
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: site.phoneHref,
-      email: site.email,
+      telephone: c.phoneHref,
+      email: c.email,
       contactType: "customer service",
       areaServed: "RU",
       availableLanguage: ["Russian"],
