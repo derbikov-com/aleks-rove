@@ -7,7 +7,7 @@ import { faq } from "@/content/faq";
 import { posts } from "@/content/posts";
 import { services } from "@/content/services";
 import { categories, tags } from "@/content/taxonomy";
-import type { CaseStudy, Category, Faq, Post, Service, Tag } from "@/lib/types";
+import type { CaseStudy, Category, Faq, ImageAsset, Post, Service, Tag } from "@/lib/types";
 
 const API = process.env.BACKEND_API_URL?.replace(/\/$/, "");
 const REVALIDATE_SECONDS = 300;
@@ -34,13 +34,26 @@ async function sourceOne<T>(path: string, local: () => T | undefined): Promise<T
 
 const byDateDesc = (a: Post, b: Post) => b.publishedAt.localeCompare(a.publishedAt);
 
+// В админке обложку можно не указать или загрузить без размеров — подставляем безопасные значения
+function withCover<T extends { title: string; cover?: Partial<ImageAsset> | null }>(item: T): T & { cover: ImageAsset } {
+  const c = item.cover;
+  const cover: ImageAsset = c?.src
+    ? { src: c.src, alt: c.alt || item.title, width: c.width || 1600, height: c.height || 900 }
+    : { src: "/og.png", alt: item.title, width: 1200, height: 630 };
+  return { ...item, cover };
+}
+
 export const getServices = () => sourceList<Service>("/api/public/services", () => services);
 export const getService = (slug: string) =>
   sourceOne<Service>(`/api/public/services/${encodeURIComponent(slug)}`, () => services.find((s) => s.slug === slug));
 
-export const getCases = () => sourceList<CaseStudy>("/api/public/cases", () => cases);
-export const getCase = (slug: string) =>
-  sourceOne<CaseStudy>(`/api/public/cases/${encodeURIComponent(slug)}`, () => cases.find((c) => c.slug === slug));
+export const getCases = async () => (await sourceList<CaseStudy>("/api/public/cases", () => cases)).map(withCover);
+export const getCase = async (slug: string) => {
+  const item = await sourceOne<CaseStudy>(`/api/public/cases/${encodeURIComponent(slug)}`, () =>
+    cases.find((c) => c.slug === slug),
+  );
+  return item ? withCover(item) : null;
+};
 
 export const getCategories = () => sourceList<Category>("/api/public/categories", () => categories);
 export const getTags = () => sourceList<Tag>("/api/public/tags", () => tags);
@@ -56,8 +69,12 @@ export async function getPosts(filter: { category?: string; tag?: string } = {})
       (p) => (!filter.category || p.category === filter.category) && (!filter.tag || p.tags.includes(filter.tag)),
     ),
   );
-  return [...list].sort(byDateDesc);
+  return list.map(withCover).sort(byDateDesc);
 }
 
-export const getPost = (slug: string) =>
-  sourceOne<Post>(`/api/public/posts/${encodeURIComponent(slug)}`, () => posts.find((p) => p.slug === slug));
+export const getPost = async (slug: string) => {
+  const post = await sourceOne<Post>(`/api/public/posts/${encodeURIComponent(slug)}`, () =>
+    posts.find((p) => p.slug === slug),
+  );
+  return post ? withCover(post) : null;
+};

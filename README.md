@@ -1,7 +1,8 @@
 # Aleks Rove — корпоративный сайт
 
 Фронтенд корпоративного сайта по ТЗ: React 19 + Next.js 16 (App Router), TypeScript, Tailwind CSS 4.
-Контент и заявки готовы к подключению Java-бэкенда (админка/CMS) — контракт в [docs/backend-api.md](docs/backend-api.md).
+Контент, медиа и заявки — из Java-бэкенда [aleks-rove-back](https://github.com/derbikov-com/aleks-rove-back) (CMS с ролями),
+контракт в [docs/backend-api.md](docs/backend-api.md). Без `BACKEND_API_URL` сайт работает на демо-контенте из `src/content`.
 
 ## Что внутри
 
@@ -47,6 +48,7 @@ npm run dev
 - `NEXT_PUBLIC_SITE_INDEXABLE=true` — только на боевом домене. Без неё сайт закрыт от индексации (robots + noindex).
 - `NEXT_PUBLIC_YM_ID`, `NEXT_PUBLIC_GA_ID` — счётчики.
 - `BACKEND_API_URL`, `BACKEND_API_KEY` — Java-бэкенд. Пока не заданы: контент из `src/content`, заявки пишутся в лог сервиса.
+- `REVALIDATE_SECRET` — секрет для `/api/revalidate`, который дёргает бэкенд после изменений в админке.
 
 `NEXT_PUBLIC_*` встраиваются при сборке — после изменения нужен редеплой.
 
@@ -66,5 +68,5 @@ src/lib/seo.ts      мета-теги и JSON-LD
 
 ## Что дальше
 
-- Java-бэкенд: админка с ролями (Администратор / Редактор / Автор), медиабиблиотека, приём заявок с отправкой на email, бэкапы.
+- Интерфейс админки поверх API бэкенда (вход по коду, редакторы контента, медиабиблиотека, заявки).
 - Заменить демо-тексты, контакты, реквизиты в политике и фирменный стиль (токены в `src/app/globals.css`).

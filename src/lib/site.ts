@@ -41,5 +41,6 @@ export const mainNav = [
 ] as const;
 
 export function absoluteUrl(path = "/") {
+  if (/^https?:\/\//.test(path)) return path;
   return `${site.url}${path.startsWith("/") ? path : `/${path}`}`;
 }
